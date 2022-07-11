@@ -1,0 +1,37 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../models/models.dart';
+import 'screens.dart';
+
+class GroceryScreen extends StatelessWidget {
+  const GroceryScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          // Create New Item
+          Provider.of<GroceryManager>(context, listen: false).createNewItem();
+          // Here, you trigger a call to createNewItem() when the user taps the
+          //'+' button.
+        },
+      ),
+      body: buildGroceryScreen(),
+    );
+  }
+
+  Widget buildGroceryScreen() {
+    return Consumer<GroceryManager>(
+      builder: (context, manager, child) {
+        if (manager.groceryItems.isNotEmpty) {
+          return GroceryListScreen(manager: manager);
+        } else {
+          return const EmptyGroceryScreen();
+        }
+      },
+    );
+  }
+}
